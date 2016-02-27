@@ -1,0 +1,70 @@
+<div class="row" *ngFor="#todo of todos">
+	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+		<div class="panel panel-primary" >
+			<div class="panel-heading">
+			<div class="row">
+				<div class="col-sm-8 col-md-8">
+					<i class="glyphicon glyphicon-list-alt"></i> 
+					{{ todo.list_name }} 
+				</div>
+				<div class="col-md-4 col-sm-4 text-right">
+					<a href="#"><i class="glyphicon glyphicon-pencil control-project"></i></a> |  
+					<a (click)="deleteTodo(todo.id)"><i class="glyphicon glyphicon-trash control-project" ></i></a> 
+				</div>
+			</div>
+				
+			</div>
+		    <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+		    <div class="input-group add-task-panel" [hidden]="submitted">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+				<input #newTask (keyup.enter)="addTask(newTask.value, todo.id); newTask.value=''"
+			        type="text" class="form-control"
+			      placeholder="Start typing here to create to task." required >
+				<span class="input-group-btn">
+					<button class="btn btn-success" type="button" (click)="addTask(newTask.value, todo.id); newTask.value=''">Add Task</button>
+				</span>
+		    </div>
+			</form>
+			<table class="table table-bordered list-tasks">
+				<tbody>
+				<tr *ngFor="#task of todo.todo_items #i=index">
+					<td class="text-center">
+						<input type="checkbox" [(ngModel)]="task.completed" [checked]="task.completed" class="form control text-center">
+					</td>
+					<td>
+							<div [ngClass]="{'custom': task.completed}" *ngIf="!task.editing" (dblclick)="editTask(task)">
+								{{ task.title }}
+							</div>
+					</td>
+					<td class="text-center">
+						<a href="#">
+							<i class="glyphicon glyphicon-resize-vertical"></i>
+						</a> |  
+						<a  (click)="editTask(task)">
+							<i class="glyphicon glyphicon-pencil"></i>
+						</a> |  
+						<a (click)="deleteTask(task.id, todo.id)" >
+							<i class="glyphicon glyphicon-trash"></i>
+						</a> 
+					</td>
+				</tr>
+					<todo-item >
+					
+					</todo-item>
+					
+				</tbody>
+			</table><hr>
+			<div>
+				<span>{{getTodoList}}</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-center">
+		
+		<button class="btn btn-primary btn-lg"  (click)="addTodo('sdfssdssf',2)">
+			<i class="glyphicon glyphicon-plus"></i> Add TODO List
+		</button>
+	</div>
+</div>
