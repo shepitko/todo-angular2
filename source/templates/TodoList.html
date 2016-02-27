@@ -32,9 +32,10 @@
 						<input type="checkbox" [(ngModel)]="task.completed" [checked]="task.completed" class="form control text-center">
 					</td>
 					<td>
-							<div [ngClass]="{'custom': task.completed}" *ngIf="!task.editing" (dblclick)="editTask(task)">
+							<div [ngClass]="{'completed': task.completed}" *ngIf="!task.editing" (dblclick)="editTask(task)">
 								{{ task.title }}
 							</div>
+							<input class="edit" *ngIf="task.editing" [value]="task.title" #editedtask (blur)="stopEditing(task, editedtask.value)" (keyup.enter)="updateEditingTask(task, editedtask.value, task.id, todo.id)" (keyup.escape)="cancelEditingTask(task)">
 					</td>
 					<td class="text-center">
 						<a href="#">

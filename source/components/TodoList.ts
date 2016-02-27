@@ -43,17 +43,16 @@ export class TodoList {
         task.editing = false;
     }
 
-    updateEditingTask(task, editedName: string, id) {
+    updateEditingTask(task, editedName: string, task_id: number, todo_id: number) {
         editedName = editedName.trim();
         task.editing = false;
-/*
         if (editedName.length === 0) {
-            return this._taskService.deleteTask(id);
+            this.deleteTask(task_id, todo_id);
         } else {
-            this._taskService.updateEditingTask(editedName, id);
+            this._todoService.updateTask(editedName, task_id, todo_id);
+            task.title = editedName;
         }
-*/
-        task.name = editedName;
+        
     }
 
     editTask(task) {
