@@ -56,3 +56,17 @@ tr:hover {
   font-style: italic;
   color: gray;
 }
+.edit {
+  color: black;
+}
+a {
+  cursor: pointer;
+}
+.table-hover tbody tr td:last-child {
+  color: #4d4d4d;
+  text-decoration: none;
+  visibility: hidden;
+}
+.table-hover tbody tr:hover td:last-child {
+  visibility: visible;
+}

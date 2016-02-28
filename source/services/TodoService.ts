@@ -32,7 +32,9 @@ export class TodoService{
     }
 
     loadTodos(){
-        this.http.get(this.UrlService.buildUrl('/todo_lists')).map(response => response.json()).subscribe(data => {
+        this.http.get(this.UrlService.buildUrl('/todo_lists')).map(res => {
+            return res.json();
+        }).subscribe(data => {
             this._dataStore.todos = data;
             this.updateTodos();
         });
@@ -45,30 +47,53 @@ export class TodoService{
             .map(response => response.json())
             .subscribe(data => {
                 this._dataStore.todos.push(data);
+            }, error => console.log('Could not update todo.'));
+    }
+
+    updateTodo(editedName, todo_id) {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var todo = JSON.stringify({ "list_name": editedName });
+        this.http.put(this.UrlService.buildUrl(`/todo_lists/${todo_id}`), todo, { headers: headers })
+            .map(response => response.json()).subscribe(data => {
+                this._dataStore.todos.forEach((todo, index) => {
+                    if (todo.id === data.id) {
+                        this._dataStore.todos[index] = data;
+                    }
+                });
                 this.updateTodos();
             }, error => console.log('Could not update todo.'));
     }
+
     deleteTodo(todo_id: number){
         this.http.delete(this.UrlService.buildUrl(`/todo_lists/${todo_id}`)).subscribe(response => {
-            this._dataStore.todos.forEach((t, index) => {
-                if(t.id === todo_id){ this._dataStore.todos.splice(index, 1); }
+            this._dataStore.todos.forEach((todo, index) => {
+                if(todo.id === todo_id){ 
+                    this._dataStore.todos.splice(index, 1); 
+                    this.updateTodos();
+                }
+
             });
-            this.updateTodos();
-        });
+            
+        }, error => console.log('Could not delete todo.'));
     }
 
     addTask(newTask:string, todo_id:number) {
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
-       /* console.log(this.getDateNow());*/
         var data = JSON.stringify({ "completed": 0, "title": newTask, "due_date":this.getDateNow(), "description":"test"});
         this.http.post(this.UrlService.buildUrl(`/todo_lists/${todo_id}/todo_items`), data, { headers: headers })
             .map(response => response.json())
             .subscribe(data => {
-                console.log(this.getDateNow());
-                this._dataStore.todos.push(data);
-                this.updateTodos();
-            });
+                this._dataStore.todos.forEach((todo, index) => {
+                    if (todo.id === data.id) {
+                        this._dataStore.todos.push(data);
+                        
+                    }
+                });
+                
+            }, error => console.log('Could not add task.'));
+
     }
 
     updateTask(editedName, task_id, todo_id) {
@@ -91,6 +116,26 @@ export class TodoService{
         }, error => console.log('Could not update todo.'));
     }
 
+    toggleCompletion(task_info, todo_id) { 
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var task = JSON.stringify({ "completed": !task_info.completed, "updated_at": task_info.updated_at });
+        this.http.put(this.UrlService.buildUrl(`/todo_lists/${todo_id}/todo_items/${task_info.id}`), task, { headers: headers })
+            .map(response => response.json()).subscribe(data => {
+                this._dataStore.todos.forEach((todo, index) => {
+                    if (todo.id === todo_id) {
+                        todo.todo_items.forEach((task, i_index) => {
+                            if (task.id === data.id) {
+                                this._dataStore.todos[index].todo_items[i_index] = data;
+                            }
+                        });
+                    }
+                });
+                this.updateTodos();
+            }, error => console.log('Could not update todo.')); 
+
+    }
+
     deleteTask(task_id, todo_id){
         this.http.delete(this.UrlService.buildUrl(`/todo_lists/${todo_id}/todo_items/${task_id}`)).subscribe(response => {           
             this._dataStore.todos.forEach((todo, index) => {
@@ -100,7 +145,6 @@ export class TodoService{
                     });
                 }
             });
-            this.updateTodos();
         });
     }
 

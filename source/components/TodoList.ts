@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from 'angular2/core';
+import {Component, Inject, OnInit, OnDestroy} from 'angular2/core';
 
 import {TodoService, ITodo} from '../services/TodoService';
 import {TodoItem} from './TodoItem';
@@ -20,27 +20,56 @@ export class TodoList {
             .subscribe(updateTodos => this.todos = updateTodos);
         this._todoService.loadTodos();
     }
-    addTodo(newTodo: string, user_id: number) {
+
+    /*todo section*/
+    addTodo(newTodo, user_id: number, todo_new) {
         this._todoService.addTodo(newTodo, user_id);
         this._todoService.loadTodos();
+        todo_new.add = false;
     }
+
+    todoCreateState(todo_new) {
+        todo_new.add = true;
+    }
+
+    updateEditingTodo(todo, editedName: string,  todo_id: number) {
+        
+        editedName = editedName.trim();
+        if (editedName.length !== 0) {
+            this._todoService.updateTodo(editedName, todo_id);
+            todo.list_name = editedName;
+        }
+        todo.editing = false;
+    }
+
+    stopEditingTodo(todo, editedName: string) {
+        todo.name = editedName;
+        todo.editing = false;
+    }
+
+    cancelEditingTodo(todo) {
+        todo.editing = false;
+    }
+
+    editTodo(todo) {
+        todo.editing = true;
+    }
+    
     deleteTodo(todo_id: number) {
-        console.log(todo_id);
         this._todoService.deleteTodo(todo_id);
-        this._todoService.loadTodos();
+        /*lazy load */
+        setTimeout(() => {
+            this._todoService.loadTodos();
+        }, 10000);
     }
+    
+    /*task section*/
     addTask(newTask: string, todo_id: number) {
         this._todoService.addTask(newTask, todo_id);
-        this._todoService.loadTodos();
-    }
-
-    stopEditing(task, editedName: string) {
-        task.name = editedName;
-        task.editing = false;
-    }
-
-    cancelEditingTask(task) {
-        task.editing = false;
+        /*lazy load */
+        setTimeout(() => {
+            this._todoService.loadTodos();
+        }, 200);   
     }
 
     updateEditingTask(task, editedName: string, task_id: number, todo_id: number) {
@@ -52,7 +81,16 @@ export class TodoList {
             this._todoService.updateTask(editedName, task_id, todo_id);
             task.title = editedName;
         }
-        
+
+    }
+
+    stopEditing(task, editedName: string) {
+        task.name = editedName;
+        task.editing = false;
+    }
+
+    cancelEditingTask(task) {
+        task.editing = false;
     }
 
     editTask(task) {
@@ -63,8 +101,12 @@ export class TodoList {
         this._todoService.deleteTask(task_id, todo_id);
     }
 
-    submitted = false;
-    onSubmit() { this.submitted = true; }
+    toggleCompletion(task, todo_id) {
+        this._todoService.toggleCompletion(task, todo_id);
+    }
+
+    todo_new = { add: false };
+    /*newTodo = { valuse: "" };*/
 
     ngOnDestroy() {
         this.todosSubscription.unsubscribe();
