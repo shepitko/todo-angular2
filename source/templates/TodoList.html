@@ -14,15 +14,19 @@
 					</div>
 				</div>
 			</div>
+
+		    <form #formCtrl="ngForm">
 		    <div class="input-group add-task-panel">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
-				<input #newTask (keyup.enter)="addTask(newTask.value, todo.id); newTask.value=''"
-			        type="text" class="form-control"
-			      placeholder="Start typing here to create to task." required >
-				<span class="input-group-btn">
-					<button class="btn btn-success" type="button" (click)="addTask(newTask.value, todo.id); newTask.value=''">Add Task</button>
-				</span>
+			    	<span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+					<input #newTask (keyup.enter)="addTask(newTask.value, todo.id); newTask.value=''"
+				        type="text" class="form-control"
+				      placeholder="Start typing here to create to task." required="required" >
+					<span class="input-group-btn">
+						<button class="btn btn-success" type="button" (click)="addTask(newTask.value, todo.id); newTask.value=''" [disabled]="!formCtrl.form.valid">Add Task</button>
+					</span>
+				
 		    </div>
+		    </form>
 			<table class="table table-bordered list-tasks table-hover table-striped">
 				<tbody>
 					<tr *ngFor="#task of todo.todo_items #i=index">
@@ -55,11 +59,13 @@
 </div>
 <div class="row">
 	<div  class="col-md-12 text-center">
-		<input #newTodo (keyup.enter)="addTodo(newTodo.value, 1, todo_new); newTodo.value=''" *ngIf="todo_new.add" 
-				type="text" placeholder="Enter name for new TODO." required >
-		<button type="button" class="btn btn-primary btn-lg" (click)="addTodo(newTodo.value, 1, todo_new); newTodo.value=''" *ngIf="todo_new.add"  >
+	<span *ngIf="todo_new.add">
+		<input #newTodo (keyup.enter)="addTodo(newTodo, 1, todo_new)" required>
+		<button (click)="addTodo(newTodo, 1, todo_new)" type="button" class="btn btn-primary btn-lg">
 			<i class="glyphicon glyphicon-plus"></i> Create TODO List
 		</button>
+	</span>
+		
 		<button type="button" class="btn btn-primary btn-lg" *ngIf="!todo_new.add" (click)="todoCreateState(todo_new)">
 			<i class="glyphicon glyphicon-plus" ></i> Add TODO List
 		</button>

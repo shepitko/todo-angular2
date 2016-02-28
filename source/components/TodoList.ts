@@ -23,8 +23,10 @@ export class TodoList {
 
     /*todo section*/
     addTodo(newTodo, user_id: number, todo_new) {
-        this._todoService.addTodo(newTodo, user_id);
-        this._todoService.loadTodos();
+        this._todoService.addTodo(newTodo.value, user_id);
+        setTimeout(() => {
+            this._todoService.loadTodos();
+        }, 500);
         todo_new.add = false;
     }
 
@@ -106,8 +108,6 @@ export class TodoList {
     }
 
     todo_new = { add: false };
-    /*newTodo = { valuse: "" };*/
-
     ngOnDestroy() {
         this.todosSubscription.unsubscribe();
     }
