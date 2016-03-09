@@ -1,4 +1,4 @@
-@import (inline) './vendor/bootstrap.css';
+@import (inline) './vendor/bootstrap.min.css';
 
 body{
   background-color: #BA680E;
@@ -7,8 +7,9 @@ body{
   background-attachment: scroll;
   background-position: 0px 0px;
 }
+
 header{
-  padding: 20px 0px;
+  padding: 15px 0px;
 }
 footer{
   padding: 20px 0px;
@@ -59,11 +60,11 @@ tr:hover{
 a { 
   cursor: pointer;
 }
-.table-hover tbody tr td:last-child {
+.table-hover tbody tr td:last-child > div,{
     color: #4d4d4d;
     text-decoration:none;
     visibility: hidden;
 }
-.table-hover tbody tr:hover td:last-child {
+.table-hover tbody tr:hover td:last-child > div{
       visibility: visible;
 }      

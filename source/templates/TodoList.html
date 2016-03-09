@@ -1,3 +1,10 @@
+<nav class='col-md-12 nav navbar text-right'>
+	<a (click)="logout()">Logout</a>
+</nav>
+<div class="col-md-12 text-center">
+	<h1>SIMPLE TODO LISTS</h1>
+	<h4>FROM RUBY GARAGE</h4>
+</div>
 <div class="row" *ngFor="#todo of todos">
 	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
 		<div class="panel panel-primary" >
@@ -9,7 +16,7 @@
 						<input class="edit" *ngIf="todo.editing" [value]="todo.list_name" #editedTodo (blur)="stopEditingTodo(todo, editedTodo.value)" (keyup.enter)="updateEditingTodo(todo, editedTodo.value, todo.id)" (keyup.escape)="cancelEditingTodo(todo)">
 					</div>
 					<div class="col-md-2 col-sm-3 col-xs-4 text-right">
-						<a href="#" (click)="editTodo(todo)"><i class="glyphicon glyphicon-pencil control-project"></i></a> |  
+						<a (click)="editTodo(todo)"><i class="glyphicon glyphicon-pencil control-project"></i></a> |  
 						<a (click)="deleteTodo(todo.id)"><i class="glyphicon glyphicon-trash control-project" ></i></a> 
 					</div>
 				</div>
@@ -39,16 +46,18 @@
 								</div>
 								<input class="edit" *ngIf="task.editing" [value]="task.title" #editedtask (blur)="stopEditing(task, editedtask.value)" (keyup.enter)="updateEditingTask(task, editedtask.value, task.id, todo.id)" (keyup.escape)="cancelEditingTask(task)">
 						</td>
-						<td class="text-center ">
-							<a href="#">
-								<i class="glyphicon glyphicon-resize-vertical"></i>
-							</a> |  
-							<a  (click)="editTask(task)">
-								<i class="glyphicon glyphicon-pencil"></i>
-							</a> |  
-							<a (click)="deleteTask(task.id, todo.id)" >
-								<i class="glyphicon glyphicon-trash"></i>
-							</a> 
+						<td class="text-center">
+							<div>
+								<a href="#">
+									<i class="glyphicon glyphicon-resize-vertical"></i>
+								</a> |  
+								<a  (click)="editTask(task)">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a> |  
+								<a (click)="deleteTask(task.id, todo.id)" >
+									<i class="glyphicon glyphicon-trash"></i>
+								</a> 
+							</div>
 						</td>
 					</tr>
 					
@@ -60,8 +69,8 @@
 <div class="row">
 	<div  class="col-md-12 text-center">
 	<span *ngIf="todo_new.add">
-		<input #newTodo (keyup.enter)="addTodo(newTodo, 1, todo_new)" required>
-		<button (click)="addTodo(newTodo, 1, todo_new)" type="button" class="btn btn-primary btn-lg">
+		<input #newTodo (keyup.enter)="addTodo(newTodo, todo_new)" required>
+		<button (click)="addTodo(newTodo, todo_new)" type="button" class="btn btn-primary btn-lg">
 			<i class="glyphicon glyphicon-plus"></i> Create TODO List
 		</button>
 	</span>

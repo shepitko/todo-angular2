@@ -1,12 +1,10 @@
 import {Component, Inject, OnInit, OnDestroy} from 'angular2/core';
-
+import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
 import {TodoService, ITodo} from '../services/TodoService';
-import {TodoItem} from './TodoItem';
 
 @Component({
     selector: 'todo-list',
-    templateUrl: './source/templates/TodoList.html',
-    directives: [TodoItem]
+    templateUrl: './source/templates/TodoList.html'
 })
 export class TodoList {
     todos: ITodo[];
@@ -22,8 +20,8 @@ export class TodoList {
     }
 
     /*todo section*/
-    addTodo(newTodo, user_id: number, todo_new) {
-        this._todoService.addTodo(newTodo.value, user_id);
+    addTodo(newTodo, todo_new) {
+        this._todoService.addTodo(newTodo.value);
         setTimeout(() => {
             this._todoService.loadTodos();
         }, 500);
@@ -109,12 +107,9 @@ export class TodoList {
 
     todo_new = { add: false };
     ngOnDestroy() {
-        this.todosSubscription.unsubscribe();
+        /*this.todosSubscription.unsubscribe();*/
+    }
+    logout(){
+        this._todoService.logout();
     }
 }
-
-/*
-add todo(project)
-delete
-edit name
-*/
