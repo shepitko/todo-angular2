@@ -178,7 +178,7 @@ export class TodoService{
         };
         let url = this.router.lastNavigationAttempt;
         
-        this.http.delete('http://localhost:3000/api/auth/sign_out', { headers: this.getTokenHeaders() })
+        this.http.delete(this.UrlService.buildUrl('/auth/sign_out'), { headers: this.getTokenHeaders() })
             .subscribe(
             response => {
                 localStorage.clear();

@@ -60,7 +60,7 @@ export class TodoList {
         /*lazy load */
         setTimeout(() => {
             this._todoService.loadTodos();
-        }, 10000);
+        }, 20000);
     }
     
     /*task section*/
@@ -69,7 +69,7 @@ export class TodoList {
         /*lazy load */
         setTimeout(() => {
             this._todoService.loadTodos();
-        }, 200);   
+        }, 500);   
     }
 
     updateEditingTask(task, editedName: string, task_id: number, todo_id: number) {

@@ -3,6 +3,7 @@ import { Router, RouterLink } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 import { Http, Headers } from 'angular2/http';
 import { contentHeaders } from '../common/headers';
+import {UrlService} from '../services/UrlService';
 
 @Component({
 	directives: [RouterLink, CORE_DIRECTIVES, FORM_DIRECTIVES],
@@ -10,13 +11,13 @@ import { contentHeaders } from '../common/headers';
 })
 
 export class Login {
-	constructor( @Inject(Router) public router: Router, @Inject(Http) public http: Http) {
+	constructor( @Inject(Router) public router: Router, @Inject(Http) public http: Http, @Inject(UrlService) private UrlService) {
 	}
 
 	login(event, email, password) {
 		event.preventDefault();
 		let body = JSON.stringify({ "email": email, "password": password });
-		this.http.post('http://localhost:3000/api/auth/sign_in', body, { headers: contentHeaders })
+		this.http.post(this.UrlService.buildUrl('/auth/sign_in'), body, { headers: contentHeaders })
 			.subscribe(
 			response => {
 				let data = response.json();

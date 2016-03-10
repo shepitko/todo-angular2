@@ -3,20 +3,20 @@ import { Router, RouterLink } from 'angular2/router';
 import { CORE_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 import { Http } from 'angular2/http';
 import { contentHeaders } from '../common/headers';
-
+import {UrlService} from '../services/UrlService';
 
 @Component({
   directives: [RouterLink, CORE_DIRECTIVES, FORM_DIRECTIVES],
   templateUrl: './source/templates/Signup.html'
 })
 export class Signup {
-  constructor(@Inject(Router) public router: Router, @Inject(Http) public http: Http) {
+  constructor( @Inject(Router) public router: Router, @Inject(Http) public http: Http, @Inject(UrlService) private UrlService) {
   }
 
   signup(event, email, password, password_confirmation) {
     event.preventDefault();
     let body = JSON.stringify({ "email": email, "password": password, "password_confirmation": password_confirmation });
-    this.http.post('http://localhost:3000/api/auth', body, { headers: contentHeaders })
+    this.http.post(this.UrlService.buildUrl('/auth'), body, { headers: contentHeaders })
       .subscribe(
       response => {
         console.log(response.json().headers);
