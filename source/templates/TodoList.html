@@ -16,8 +16,8 @@
 						<input class="edit" *ngIf="todo.editing" [value]="todo.list_name" #editedTodo (blur)="stopEditingTodo(todo, editedTodo.value)" (keyup.enter)="updateEditingTodo(todo, editedTodo.value, todo.id)" (keyup.escape)="cancelEditingTodo(todo)">
 					</div>
 					<div class="col-md-2 col-sm-3 col-xs-4 text-right">
-						<a (click)="editTodo(todo)"><i class="glyphicon glyphicon-pencil control-project"></i></a> |  
-						<a (click)="deleteTodo(todo.id)"><i class="glyphicon glyphicon-trash control-project" ></i></a> 
+						<a (click)="editTodo(todo)" title="edit todo"><i class="glyphicon glyphicon-pencil control-project"></i></a> |  
+						<a (click)="deleteTodo(todo.id)" title="delete todo"><i class="glyphicon glyphicon-trash control-project" ></i></a> 
 					</div>
 				</div>
 			</div>
@@ -27,7 +27,7 @@
 			    	<span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
 					<input #newTask (keyup.enter)="addTask(newTask.value, todo.id); newTask.value=''"
 				        type="text" class="form-control"
-				      placeholder="Start typing here to create to task." required="required" >
+				      placeholder="Start typing here to create to task." pattern={1,}>
 					<span class="input-group-btn">
 						<button class="btn btn-success" type="button" (click)="addTask(newTask.value, todo.id); newTask.value=''" [disabled]="!formCtrl.form.valid">Add Task</button>
 					</span>
@@ -36,7 +36,7 @@
 		    </form>
 			<table class="table table-bordered list-tasks table-hover table-striped">
 				<tbody>
-					<tr *ngFor="#task of todo.todo_items #i=index">
+					<tr *ngFor="#task of todo.todo_items #i=index" >
 						<td class="text-center">
 							<input type="checkbox" [(ngModel)]="task.completed" [checked]="task.completed" (click)="toggleCompletion(task, todo.id)"class="form control text-center">
 						</td>
@@ -48,13 +48,13 @@
 						</td>
 						<td class="text-center">
 							<div>
-								<a href="#">
+								<a href="#" title="priority(in developing)">
 									<i class="glyphicon glyphicon-resize-vertical"></i>
 								</a> |  
-								<a  (click)="editTask(task)">
+								<a  (click)="editTask(task)" title="edit task">
 									<i class="glyphicon glyphicon-pencil"></i>
 								</a> |  
-								<a (click)="deleteTask(task.id, todo.id)" >
+								<a (click)="deleteTask(task.id, todo.id)" title="delete task">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a> 
 							</div>

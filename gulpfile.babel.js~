@@ -10,9 +10,11 @@ import source from 'vinyl-source-stream';
 import tsify from 'tsify';
 
 gulp.task('browserify', () => {
+    var extensions = ['.js','.json','.es6'];
     return browserify({
         entries: 'source/bootstrap.ts',
-        debug: true
+        debug: true,
+	extensions:extensions
     })
         .plugin(tsify, {
             target: 'es5',
@@ -53,7 +55,9 @@ watch('./source/less/**/*.less', batch(function (events, done) {
 
 gulp.task('compress', function() {
     return gulp.src('./dist/bundle.js')
-        .pipe(uglify())
+        .pipe(uglify({
+		mangle:false
+	}))
         .pipe(rename('bundle.min.js'))
         .pipe(gulp.dest('dist'));
 });

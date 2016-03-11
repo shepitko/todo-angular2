@@ -1,10 +1,13 @@
 import {Component, Inject, OnInit, OnDestroy} from 'angular2/core';
 import {Location, RouteConfig, RouterLink, Router} from 'angular2/router';
 import {TodoService, ITodo} from '../services/TodoService';
+/*import {DragulaService, Dragula} from 'ng2-dragula/ng2-dragula';*/
 
 @Component({
     selector: 'todo-list',
     templateUrl: './source/templates/TodoList.html'
+    /*directives: [Dragula],
+    viewProviders: [DragulaService]*/
 })
 export class TodoList {
     todos: ITodo[];
@@ -24,7 +27,7 @@ export class TodoList {
         this._todoService.addTodo(newTodo.value);
         setTimeout(() => {
             this._todoService.loadTodos();
-        }, 500);
+        }, 1000);
         todo_new.add = false;
     }
 
@@ -69,7 +72,7 @@ export class TodoList {
         /*lazy load */
         setTimeout(() => {
             this._todoService.loadTodos();
-        }, 500);   
+        }, 1000);   
     }
 
     updateEditingTask(task, editedName: string, task_id: number, todo_id: number) {
