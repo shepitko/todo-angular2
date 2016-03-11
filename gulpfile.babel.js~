@@ -53,9 +53,7 @@ watch('./source/less/**/*.less', batch(function (events, done) {
 
 gulp.task('compress', function() {
     return gulp.src('./dist/bundle.js')
-        .pipe(uglify({
-		mangle:false
-	}))
+        .pipe(uglify())
         .pipe(rename('bundle.min.js'))
         .pipe(gulp.dest('dist'));
 });
